@@ -60,10 +60,64 @@ namespace Tests
       string expected = "{{{1,2},{3,4},{5,6},{7,8}}," +
                          "{{9,10},{11,12},{13,14},{15,16}}," +
                          "{{17,18},{19,20},{21,22},{23,24}}," +
-                         "{{25,26},{27,28},{29,30},{31,32}},"+
-                         "{{33,34},{35,36},{37,38},{39,40}},"+
+                         "{{25,26},{27,28},{29,30},{31,32}}," +
+                         "{{33,34},{35,36},{37,38},{39,40}}," +
                          "{{41,42},{43,44},{45,46},{47,48}}}";
       Assert.AreEqual(expected, res);
-    }                  
+    }
+
+    [Test]
+    public void TestPositiveNumbersFromArray()
+    {
+      int[] numbers = { -4, -3, -2, -1, 0, 1, 2, 3, 4 };
+      int res = 0;
+      foreach(var num in numbers)
+      {
+        if (num > 0)
+          res++;
+      }
+      Assert.AreEqual(4, res);
+    }
+
+    [Test]
+    public void TestInversionArray()
+    {
+      Action<int[]> revers = (int[] arr) =>
+      {
+        int tmp;
+        for (int b = 0, m = arr.Length/2; b < m; b++)
+        {
+          tmp = arr[b];
+          arr[b] = arr[arr.Length - 1 - b];
+          arr[arr.Length - 1 - b] = tmp;
+        }
+      };
+
+      int[] numbers = { };
+      int[] expected = { };
+      revers(numbers);
+      Assert.AreEqual(expected, numbers);
+
+      numbers = new int[] { 1 };
+      expected = new int[] { 1 };
+      revers(numbers);
+      Assert.AreEqual(expected, numbers);
+
+      numbers = new int[] { 1, 2 };
+      expected = new int[] { 2, 1 };
+      revers(numbers);
+      Assert.AreEqual(expected, numbers);
+
+      numbers = new int[] { 1, 2, 3 };
+      expected = new int[] { 3, 2, 1 };
+      revers(numbers);
+      Assert.AreEqual(expected, numbers);
+
+      numbers = new int[] { -4, -3, -2, -1, 0, 1, 2, 3, 4 };
+      expected = new int[] { 4, 3, 2, 1, 0, -1, -2, -3, -4 };
+      revers(numbers);
+      Assert.AreEqual(expected, numbers);
+    }
+
   }
 }
