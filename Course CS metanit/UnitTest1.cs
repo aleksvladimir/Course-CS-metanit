@@ -82,6 +82,9 @@ namespace Tests
     [Test]
     public void TestInversionArray()
     {
+      // Виды делегатов:
+      // Func<T,T> - возвращает значение через return
+      // Action<T> - модифицирует объект
       Action<int[]> revers = (int[] arr) =>
       {
         int tmp;
@@ -117,6 +120,49 @@ namespace Tests
       expected = new int[] { 4, 3, 2, 1, 0, -1, -2, -3, -4 };
       revers(numbers);
       Assert.AreEqual(expected, numbers);
+    }
+
+    public void Increment(int n)
+    {
+      //копия
+      n++;
+    }
+    public void Increment(ref int n)
+    {
+      //ref - &
+      n++;
+    }
+    public void Increment(in byte n)
+    {
+      //in - const&
+      //n++; - error!
+    }
+    public void Increment(in int n, out int incr1, out int incr2)
+    {
+      incr1 = n + 1;  // как return
+      incr2 = n + 2;  // как return
+    }
+    [Test]
+    public void TestRefOutIn()
+    {
+      int number = 1;
+      Increment(number);
+      Assert.AreEqual(1, number);
+
+      Increment(ref number);
+      Assert.AreEqual(2, number);
+
+      byte n = 1;
+      Increment(in n);
+      Assert.AreEqual(1, n);
+
+      number = 1;
+      Increment(in number, out int incr1, out int incr2);
+      Assert.AreEqual(2, incr1);
+      Assert.AreEqual(3, incr2);
+      Increment(in incr2, out int incr3, out int incr4);
+      Assert.AreEqual(4, incr3);
+      Assert.AreEqual(5, incr4);
     }
 
   }
