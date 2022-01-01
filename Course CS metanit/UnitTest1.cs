@@ -122,6 +122,7 @@ namespace Tests
       Assert.AreEqual(expected, numbers);
     }
 
+    #region[TestRefOutIn Impl]
     public void Increment(int n)
     {
       //копия
@@ -142,6 +143,7 @@ namespace Tests
       incr1 = n + 1;  // как return
       incr2 = n + 2;  // как return
     }
+    #endregion
     [Test]
     public void TestRefOutIn()
     {
@@ -165,5 +167,23 @@ namespace Tests
       Assert.AreEqual(5, incr4);
     }
 
+    #region[TestKeywordParams Impl]
+    public int Sum(int initVal, params int[] numbers)
+    {
+      int res = initVal;
+      foreach (var item in numbers)
+      {
+        res += item;
+      }
+      return res;
+    }
+    #endregion
+    [Test]
+    public void TestKeywordParams()
+    {
+      Assert.AreEqual(0, Sum(0));
+      Assert.AreEqual(5, Sum(5, new int[] { }));
+      Assert.AreEqual(6, Sum(0, new int[] { 1, 2, 3 }));
+    }
   }
 }
