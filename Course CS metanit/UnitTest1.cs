@@ -181,9 +181,11 @@ namespace Tests
     [Test]
     public void TestKeywordParams()
     {
-      Assert.AreEqual(0, Sum(0));
+      Assert.AreEqual(5, Sum(5));
+      Assert.AreEqual(6, Sum(5, 1));
+      Assert.AreEqual(11, Sum(5, 1,2,3));
       Assert.AreEqual(5, Sum(5, new int[] { }));
-      Assert.AreEqual(6, Sum(0, new int[] { 1, 2, 3 }));
+      Assert.AreEqual(11, Sum(5, new int[] { 1, 2, 3 }));
     }
   }
 }
