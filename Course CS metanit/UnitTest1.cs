@@ -187,5 +187,47 @@ namespace Tests
       Assert.AreEqual(5, Sum(5, new int[] { }));
       Assert.AreEqual(11, Sum(5, new int[] { 1, 2, 3 }));
     }
+
+    #region[TestLocalMethod]
+    public int Compare(int[] numbers1, int[] numbers2)
+    {
+      int res = 0;    // по умолчанию - равны (0)
+      int limit = 0;
+      int sumNumbers1 = Sum(numbers1);
+      int sumNumbers2 = Sum(numbers2);
+      if (sumNumbers1 > sumNumbers2)
+        res = 1;
+      else if (sumNumbers1 < sumNumbers2)
+        res = -1;
+      return res;
+
+      // локальный метод (имеет доступ к данным метода Compare: к переменной limit)
+      int Sum(int[] nums)
+      {
+        int result = 0;
+        foreach (var item in nums)
+          if(isPassed(item, limit)) result += item;
+        return result;
+
+        // статический локальный метод (не имеет доступ к данным метода Sum)
+        /*поддержка static начинается с C#8.0*/
+        /*static*/ bool isPassed(int number, int lim)
+        {
+          return number > lim;
+        }
+      }
+    }
+    #endregion
+    [Test]
+    public void TestLocalMethod()
+    {
+      Assert.AreEqual(0, Compare(new int[] { 1, 2, 3, 4, 5 }, new int[] { 1, 2, 3, 4, 5 }));
+      Assert.AreEqual(1, Compare(new int[] { 3, 4, 5, 6, 7 }, new int[] { 1, 2, 3, 4, 5 }));
+      Assert.AreEqual(-1, Compare(new int[] { 1, 2, 3, 4, 5 }, new int[] { 3, 4, 5, 6, 7 }));
+
+      Assert.AreEqual(0, Compare(new int[] { -1, 0, 1, 2 }, new int[] { -1, 0, 1, 2 }));
+      Assert.AreEqual(1, Compare(new int[] { -51, 1, 2, 3 }, new int[] { -1, 1, 2 }));
+      Assert.AreEqual(-1, Compare(new int[] { -1, 1, 2 }, new int[] { -51, 1, 2, 3 }));
+    }
   }
 }
