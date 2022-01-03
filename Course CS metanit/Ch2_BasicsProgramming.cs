@@ -3,7 +3,7 @@ using System;
 
 namespace Tests
 {
-  public class TestsArrays
+  public class Tests_Chapter2_BasicsProgramming
   {
     [SetUp]
     public void Setup()
