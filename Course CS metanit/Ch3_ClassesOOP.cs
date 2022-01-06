@@ -76,6 +76,7 @@ namespace Tests
       // with start with C#9.0
       //PersonStruct person8 = person5 with { age = 3 };
     }
+    #region[TestCreateStruct]
     struct PersonStruct
     {
       public string name; //  = "" - Cannot have field initializers in struct!!! Starts with C#10.
@@ -93,5 +94,41 @@ namespace Tests
         this.age = age;
       }
     }
+    #endregion
+
+    [Test]
+    public void TestValTypeVsRefType()
+    {
+      // Reference types inside value types:
+
+      State state1 = new State();
+      State state2 = new State();
+
+      state2.country = new Country();
+      state2.x = 5;
+      state2.country.x = 5;
+      state1 = state2;
+      state2.x = 8;         // change value in variable with value type
+      state2.country.x = 8; // change value in variable with reference type
+
+      Assert.AreEqual(8, state1.country.x); //8
+      Assert.AreEqual(8, state2.country.x); //8
+
+      Assert.AreEqual(5, state1.x); //5!
+      Assert.AreEqual(8, state2.x); //8!
+    }
+    #region[TestValTypeVsRefType]
+    struct State
+    {
+      public int x;
+      public int y;
+      public Country country; // reference type
+    }
+    class Country
+    {
+      public int x;
+      public int y;
+    }
+    #endregion
   }
 }
