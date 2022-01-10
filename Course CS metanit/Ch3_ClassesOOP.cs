@@ -1,5 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
+using Base;
+// global using Base; // using in .net 6.0
 
 namespace Tests
 {
@@ -17,39 +19,39 @@ namespace Tests
       Assert.AreEqual("Tom", tom.name);
       Assert.AreEqual("Microsoft", tom.company.title);
 
-      tom.Deconstruct(out string name, out Company company); //Deconstruct
+      tom.Deconstruct(out string name, out CompanyClass company); //Deconstruct
       Assert.AreEqual("Tom", name);
       Assert.AreEqual("Microsoft", company.title);
 
-      (string localName, Company localCompany) = tom; //Deconstruct
+      (string localName, CompanyClass localCompany) = tom; //Deconstruct
       Assert.AreEqual("Tom", localName);
       Assert.AreEqual("Microsoft", localCompany.title);
 
-      (_, Company c) = tom; //Deconstruct (need only company)
+      (_, CompanyClass c) = tom; //Deconstruct (need only company)
       Assert.AreEqual("Microsoft", c.title);
     }
     #region[TestObjectInitializers]
     class PersonClass
     {
       public string name;
-      public Company company;
+      public CompanyClass company;
       //public PersonClass(string name, Company company) // cannot have default constructor if user create ownered constructor with params and not define constructor PersonClass()!!!
       //{
       //}
       public PersonClass()
       {
         name = "Undefined";
-        company = new Company();
+        company = new CompanyClass();
       }
       public void Print() => Console.WriteLine($"Имя: {name}  Компания: {company.title}");
 
-      public void Deconstruct(out string personName, out Company personCompany)
+      public void Deconstruct(out string personName, out CompanyClass personCompany)
       {
         personName = name;
         personCompany = company;
       }
     }
-    class Company
+    class CompanyClass
     {
       public string title = "Unknown";
     }
@@ -168,5 +170,14 @@ namespace Tests
       }
 
      */
+
+    [Test]
+    public void TestGlobalNamespace()
+    {
+      Company microsoftBaseCompany = new Company("Microsoft");  // class Company has namespace Base
+      Person tom = new Person("Tom", microsoftBaseCompany);     // class Person doesn`t have namespace
+      tom.Print(out string s);
+      Assert.AreEqual("Имя: Tom. Компания: Microsoft.", s);
+    }
   }
 }
